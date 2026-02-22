@@ -95,6 +95,8 @@
 
 html {
     scroll-behavior: smooth;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 body {
@@ -104,6 +106,8 @@ body {
     line-height: 1.6;
     min-height: 100vh;
     transition: background-color var(--transition), color var(--transition);
+    width: 100%;
+    overflow-x: hidden;
 }
 
 /* Custom Scrollbar */
@@ -128,9 +132,23 @@ body {
 
 /* Container */
 .container {
+    width: 100%;
     max-width: 1280px;
     margin: 0 auto;
     padding: 0 24px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 12px;
+    }
 }
 
 /* ============================================
@@ -160,6 +178,20 @@ header .container {
     justify-content: space-between;
     align-items: center;
     height: 100%;
+    width: 100%;
+    padding: 0 24px;
+}
+
+@media (max-width: 768px) {
+    header .container {
+        padding: 0 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    header .container {
+        padding: 0 12px;
+    }
 }
 
 /* Logo */
@@ -173,10 +205,23 @@ header .container {
     cursor: pointer;
     transition: transform var(--transition-fast);
     text-decoration: none;
+    flex-shrink: 0;
 }
 
 .logo:hover {
     transform: scale(1.02);
+}
+
+@media (max-width: 768px) {
+    .logo {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 18px;
+    }
 }
 
 /* Header Actions */
@@ -184,6 +229,18 @@ header .container {
     display: flex;
     align-items: center;
     gap: 16px;
+}
+
+@media (max-width: 768px) {
+    .header-right {
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-right {
+        gap: 8px;
+    }
 }
 
 /* Theme Toggle */
@@ -200,12 +257,29 @@ header .container {
     font-size: 20px;
     transition: all var(--transition-fast);
     color: var(--text-medium);
+    flex-shrink: 0;
 }
 
 .theme-toggle:hover {
     background: var(--primary-color);
     color: white;
     transform: rotate(20deg);
+}
+
+@media (max-width: 768px) {
+    .theme-toggle {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .theme-toggle {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
 }
 
 /* Cart Icon */
@@ -220,11 +294,25 @@ header .container {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .cart-icon:hover {
     background: var(--primary-color);
     transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .cart-icon {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cart-icon {
+        font-size: 18px;
+        padding: 8px;
+    }
 }
 
 #cart-count {
@@ -276,11 +364,34 @@ header .container {
     display: flex;
     align-items: center;
     gap: 6px;
+    flex-shrink: 0;
 }
 
 .logout-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+@media (max-width: 768px) {
+    #user-name {
+        font-size: 12px;
+    }
+    
+    .logout-btn {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    #user-name {
+        display: none;
+    }
+    
+    .logout-btn {
+        padding: 8px 12px;
+        font-size: 11px;
+    }
 }
 
 /* ============================================
@@ -349,6 +460,7 @@ header .container {
     position: sticky;
     top: var(--header-height);
     z-index: 100;
+    width: 100%;
 }
 
 .search-filter-wrapper {
@@ -400,7 +512,28 @@ header .container {
 .category-pills {
     display: flex;
     gap: 10px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+}
+
+@media (max-width: 768px) {
+    .category-pills {
+        gap: 8px;
+        padding-bottom: 6px;
+        scroll-padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .category-pills {
+        gap: 6px;
+        padding-bottom: 4px;
+        scroll-padding-right: 12px;
+    }
 }
 
 .category-pill {
@@ -414,6 +547,23 @@ header .container {
     cursor: pointer;
     transition: all var(--transition-fast);
     white-space: nowrap;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+}
+
+@media (max-width: 768px) {
+    .category-pill {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .category-pill {
+        padding: 7px 14px;
+        font-size: 11px;
+        scroll-snap-align: center;
+    }
 }
 
 .category-pill:hover {
@@ -433,6 +583,7 @@ header .container {
    ============================================ */
 .products-section {
     padding: 50px 0 80px;
+    width: 100%;
 }
 
 .section-header {
@@ -459,8 +610,9 @@ header .container {
 /* Product Grid */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 24px;
+    width: 100%;
 }
 
 /* Product Card */
@@ -1362,13 +1514,24 @@ footer {
         font-size: 16px;
     }
     
+    .search-filter-section {
+        padding: 20px 0;
+    }
+
     .search-filter-wrapper {
         flex-direction: column;
         align-items: stretch;
+        gap: 12px;
     }
     
     .search-box {
         min-width: auto;
+        flex: 1;
+    }
+
+    .search-box input {
+        padding: 12px 18px 12px 46px;
+        font-size: 16px;
     }
     
     .category-pills {
@@ -1376,11 +1539,18 @@ footer {
         flex-wrap: nowrap;
         padding-bottom: 8px;
         -webkit-overflow-scrolling: touch;
+        gap: 8px;
+    }
+
+    .category-pill {
+        padding: 9px 18px;
+        font-size: 13px;
+        flex-shrink: 0;
     }
     
     .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 12px;
     }
     
     .product-card {
@@ -1439,7 +1609,8 @@ footer {
 
 @media (max-width: 480px) {
     .product-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 10px;
     }
     
     .section-header {
@@ -1454,6 +1625,73 @@ footer {
     
     .modal-footer .btn {
         width: 100%;
+    }
+
+    /* Mobile Search Bar Responsiveness */
+    .search-filter-section {
+        padding: 12px 0;
+    }
+
+    .search-filter-wrapper {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .search-box {
+        min-width: auto;
+        width: 100%;
+    }
+
+    .search-box input {
+        padding: 12px 14px 12px 42px;
+        font-size: 16px;
+        border-radius: 8px;
+    }
+
+    .search-box::before {
+        left: 12px;
+        font-size: 16px;
+    }
+
+    .category-pills {
+        gap: 6px;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+        padding-bottom: 4px;
+    }
+
+    .category-pill {
+        padding: 8px 14px;
+        font-size: 12px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 10px;
+    }
+
+    .product-card {
+        border-radius: 8px;
+    }
+
+    .product-image-wrapper {
+        padding: 8px;
+    }
+
+    .product-img {
+        height: 120px;
+    }
+
+    .product-info {
+        padding: 12px;
+    }
+
+    .product-name {
+        font-size: 12px;
     }
 }
 
