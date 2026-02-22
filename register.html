@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - TechHaven</title>
+    <link rel="stylesheet" href="auth.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="auth-page">
+    <!-- Animated Background Shapes -->
+    <div class="auth-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Header -->
+    <header class="auth-header">
+        <div class="container">
+            <div class="header-actions">
+                <a href="index.html" class="logo">TechHaven.</a>
+                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark Mode">
+                    <span id="theme-icon">🌙</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-card-header">
+                <div class="auth-icon">🚀</div>
+                <h2 class="auth-title">Create Account</h2>
+                <p class="auth-subtitle">Join TechHaven for exclusive deals</p>
+            </div>
+
+            <form id="register-form" class="auth-form">
+                <div class="form-group">
+                    <label class="form-label" for="fullname">Full Name <span>*</span></label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">👤</span>
+                        <input type="text" id="fullname" name="fullname" class="form-input with-icon" 
+                            placeholder="John Doe" required autocomplete="name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="reg-email">Email Address <span>*</span></label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">✉️</span>
+                        <input type="email" id="reg-email" name="email" class="form-input with-icon" 
+                            placeholder="john@example.com" required autocomplete="email">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="reg-password">Password <span>*</span></label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="reg-password" name="password" class="form-input with-icon" 
+                            placeholder="Create a strong password" required autocomplete="new-password"
+                            oninput="checkPasswordStrength()">
+                        <button type="button" class="password-toggle" onclick="togglePassword('reg-password', this)" title="Show/Hide Password">
+                            👁️
+                        </button>
+                    </div>
+                    <div class="password-strength" id="password-strength" style="display: none;">
+                        <div class="strength-bar">
+                            <div class="strength-fill" id="strength-fill"></div>
+                        </div>
+                        <span class="strength-text" id="strength-text">Enter a password</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="reg-confirm-password">Confirm Password <span>*</span></label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔐</span>
+                        <input type="password" id="reg-confirm-password" name="confirm-password" class="form-input with-icon" 
+                            placeholder="Confirm your password" required autocomplete="new-password"
+                            oninput="checkPasswordMatch()">
+                        <button type="button" class="password-toggle" onclick="togglePassword('reg-confirm-password', this)" title="Show/Hide Password">
+                            👁️
+                        </button>
+                    </div>
+                    <div id="password-match-msg" style="margin-top: 6px; font-size: 12px;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" id="terms" required>
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">I agree to the <a href="#" onclick="showTerms()" style="color: var(--primary-color);">Terms & Conditions</a></span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-auth" id="register-btn">
+                    <span>Create Account</span>
+                    <span>→</span>
+                </button>
+            </form>
+
+            <div class="auth-divider">or sign up with</div>
+
+            <div class="social-login">
+                <button class="social-btn" onclick="socialLogin('google')">
+                    <span>🔍</span>
+                    <span>Google</span>
+                </button>
+                <button class="social-btn" onclick="socialLogin('github')">
+                    <span>🐙</span>
+                    <span>GitHub</span>
+                </button>
+            </div>
+
+            <div class="auth-footer">
+                <p class="auth-footer-text">
+                    Already have an account? 
+                    <a href="login.html" class="auth-footer-link">Sign in</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Theme toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            document.getElementById('theme-icon').textContent = newTheme === 'light' ? '🌙' : '☀️';
+        }
+
+        // Load theme
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.getElementById('theme-icon').textContent = savedTheme === 'light' ? '🌙' : '☀️';
+        }
+
+        // Toggle password visibility
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                btn.textContent = '👁️';
+            }
+        }
+
+        // Toast notification
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                info: 'ℹ️'
+            };
+            
+            toast.innerHTML = `
+                <span class="toast-icon">${icons[type]}</span>
+                <div class="toast-content">
+                    <div class="toast-title">${type.charAt(0).toUpperCase() + type.slice(1)}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('hiding');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Social login placeholder
+        function socialLogin(provider) {
+            showToast(`${provider} signup coming soon!`, 'info');
+        }
+
+        // Show terms
+        function showTerms() {
+            showToast('Terms & Conditions page coming soon!', 'info');
+        }
+
+        // Password strength checker
+        function checkPasswordStrength() {
+            const password = document.getElementById('reg-password').value;
+            const strengthDiv = document.getElementById('password-strength');
+            const fillDiv = document.getElementById('strength-fill');
+            const textSpan = document.getElementById('strength-text');
+            
+            if (password.length === 0) {
+                strengthDiv.style.display = 'none';
+                return;
+            }
+            
+            strengthDiv.style.display = 'block';
+            
+            let strength = 0;
+            
+            // Length check
+            if (password.length >= 8) strength++;
+            if (password.length >= 12) strength++;
+            
+            // Character variety
+            if (/[a-z]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^a-zA-Z0-9]/.test(password)) strength++;
+            
+            // Determine strength level
+            let level, className, message;
+            if (strength <= 2) {
+                level = 'weak';
+                className = 'weak';
+                message = 'Weak password';
+            } else if (strength <= 4) {
+                level = 'medium';
+                className = 'medium';
+                message = 'Medium strength';
+            } else {
+                level = 'strong';
+                className = 'strong';
+                message = 'Strong password!';
+            }
+            
+            fillDiv.className = 'strength-fill ' + className;
+            textSpan.className = 'strength-text ' + className;
+            textSpan.textContent = message;
+        }
+
+        // Check password match
+        function checkPasswordMatch() {
+            const password = document.getElementById('reg-password').value;
+            const confirmPassword = document.getElementById('reg-confirm-password').value;
+            const msgDiv = document.getElementById('password-match-msg');
+            
+            if (confirmPassword.length === 0) {
+                msgDiv.textContent = '';
+                return;
+            }
+            
+            if (password === confirmPassword) {
+                msgDiv.innerHTML = '<span style="color: var(--success);">✓ Passwords match</span>';
+            } else {
+                msgDiv.innerHTML = '<span style="color: var(--error);">✗ Passwords do not match</span>';
+            }
+        }
+
+        // Form validation
+        function validateForm(fullname, email, password, confirmPassword) {
+            const errors = [];
+            
+            if (!fullname || fullname.trim().length < 2) {
+                errors.push('Please enter a valid name (at least 2 characters)');
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email || !emailRegex.test(email)) {
+                errors.push('Please enter a valid email address');
+            }
+            
+            if (!password || password.length < 6) {
+                errors.push('Password must be at least 6 characters long');
+            }
+            
+            if (password !== confirmPassword) {
+                errors.push('Passwords do not match');
+            }
+            
+            return errors;
+        }
+
+        // Register form submission
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const fullname = document.getElementById('fullname').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const confirmPassword = document.getElementById('reg-confirm-password').value;
+            const registerBtn = document.getElementById('register-btn');
+            
+            // Validation
+            const errors = validateForm(fullname, email, password, confirmPassword);
+            if (errors.length > 0) {
+                showToast(errors[0], 'error');
+                return;
+            }
+            
+            // Show loading
+            registerBtn.classList.add('loading');
+            registerBtn.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Get existing users
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                
+                // Check if user already exists
+                if (users.some(user => user.fullname === fullname)) {
+                    showToast('This name is already registered', 'error');
+                    registerBtn.classList.remove('loading');
+                    registerBtn.disabled = false;
+                    return;
+                }
+                
+                if (users.some(user => user.email === email)) {
+                    showToast('This email is already registered', 'error');
+                    registerBtn.classList.remove('loading');
+                    registerBtn.disabled = false;
+                    return;
+                }
+                
+                // Store new user
+                users.push({
+                    fullname: fullname,
+                    email: email,
+                    password: password,
+                    createdAt: new Date().toISOString()
+                });
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                showToast('Account created successfully! Redirecting...', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+            }, 1000);
+        });
+
+        // Load theme on page load
+        window.addEventListener('load', function() {
+            loadTheme();
+            
+            // If already logged in, redirect to home
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Input focus effects
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.classList.remove('focused');
+            });
+        });
+    </script>
+</body>
+</html>

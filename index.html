@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechHaven - Premium Electronics Store</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Header -->
+    <header id="main-header">
+        <div class="container">
+            <a href="index.html" class="logo">TechHaven.</a>
+            <div class="header-right">
+                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark Mode">
+                    <span id="theme-icon">🌙</span>
+                </button>
+                <div class="cart-icon" onclick="toggleCart()" title="View Cart">
+                    🛒
+                    <span id="cart-count">0</span>
+                </div>
+                <div class="user-info">
+                    <span id="user-name"></span>
+                    <button class="logout-btn" onclick="logout()">
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Upgrade Your Tech Game</h2>
+            <p>Discover the latest gadgets and accessories at unbeatable prices. Premium quality, delivered to your doorstep.</p>
+        </div>
+    </section>
+
+    <!-- Search & Filter Section -->
+    <section class="search-filter-section">
+        <div class="container">
+            <div class="search-filter-wrapper">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search products..." oninput="handleSearch()">
+                </div>
+                <div class="category-pills" id="category-pills">
+                    <button class="category-pill active" data-category="all" onclick="filterByCategory('all')">All</button>
+                    <button class="category-pill" data-category="laptops" onclick="filterByCategory('laptops')">Laptops</button>
+                    <button class="category-pill" data-category="phones" onclick="filterByCategory('phones')">Phones</button>
+                    <button class="category-pill" data-category="audio" onclick="filterByCategory('audio')">Audio</button>
+                    <button class="category-pill" data-category="accessories" onclick="filterByCategory('accessories')">Accessories</button>
+                    <button class="category-pill" data-category="gaming" onclick="filterByCategory('gaming')">Gaming</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <main class="products-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Latest Products</h2>
+                <span class="product-count" id="product-count">Showing all products</span>
+            </div>
+            <div id="product-list" class="product-grid">
+                <!-- Products will be inserted here by JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">TechHaven.</div>
+                <div class="footer-links">
+                    <a href="#">About Us</a>
+                    <a href="#">Contact</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+                <div class="footer-copyright">© 2025 TechHaven. All rights reserved.</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h2>🛒 Your Cart</h2>
+            <button class="close-btn" onclick="toggleCart()">×</button>
+        </div>
+        <div id="cart-items" class="cart-items">
+            <div class="empty-cart">
+                <div class="empty-cart-icon">🛒</div>
+                <h3>Your cart is empty</h3>
+                <p>Add some products to get started!</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>₹<span id="cart-subtotal">0</span></span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping</span>
+                    <span id="shipping-cost">Free</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span>₹<span id="cart-total">0</span></span>
+                </div>
+            </div>
+            <div class="cart-actions">
+                <button class="btn btn-secondary" onclick="clearCart()">Clear</button>
+                <button id="checkout-btn" class="btn btn-primary" onclick="openPaymentModal()" disabled>
+                    Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="cart-overlay" class="overlay" onclick="toggleCart()"></div>
+
+    <!-- Product Details Modal -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Product Details</h3>
+                <button class="close-btn" onclick="closeProductModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="product-detail-content" class="product-detail">
+                    <!-- Product details will be inserted here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeProductModal()">Close</button>
+                <button class="btn btn-primary" id="modal-add-to-cart" onclick="addToCartFromModal()">
+                    Add to Cart
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="product-overlay" class="overlay" onclick="closeProductModal()"></div>
+
+    <!-- Payment Modal -->
+    <div id="payment-modal" class="modal payment-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>💳 Secure Payment</h3>
+                <button class="close-btn" onclick="closePaymentModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="payment-icon">📱</div>
+                <p>Scan the QR code below to complete your payment</p>
+                <div class="qr-container">
+                    <img src="" alt="Payment QR Code" id="payment-qr">
+                    <p class="payment-upi-id">UPI ID: shop@techhaven</p>
+                </div>
+                <div class="amount-display">
+                    Amount: <strong>₹<span id="modal-total">0</span></strong>
+                </div>
+                <div class="payment-methods">
+                    <div class="payment-method active">UPI</div>
+                    <div class="payment-method">Card</div>
+                    <div class="payment-method">Net Banking</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closePaymentModal()">Cancel</button>
+                <button class="btn btn-primary btn-loading" id="confirm-payment-btn" onclick="processPayment()">
+                    Confirm Payment
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="payment-overlay" class="overlay" onclick="closePaymentModal()"></div>
+
+    <script src="script.js"></script>
+    <script>
+        // Check if user is logged in on page load
+        window.addEventListener('load', function() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            if (!loggedInUser) {
+                showToast('Please login first', 'warning');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+                return;
+            }
+
+            // Display user name
+            const user = JSON.parse(loggedInUser);
+            document.getElementById('user-name').textContent = `Hello, ${user.fullname}`;
+            
+            // Load saved theme
+            loadTheme();
+            
+            // Load wishlist
+            loadWishlist();
+            
+            // Load cart from localStorage
+            loadCart();
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 10) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            showToast('Logged out successfully', 'success');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 1000);
+        }
+
+        // Theme toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            document.getElementById('theme-icon').textContent = newTheme === 'light' ? '🌙' : '☀️';
+        }
+
+        // Load theme
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.getElementById('theme-icon').textContent = savedTheme === 'light' ? '🌙' : '☀️';
+        }
+    </script>
+</body>
+</html>
